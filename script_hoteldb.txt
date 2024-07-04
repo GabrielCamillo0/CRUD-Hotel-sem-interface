@@ -1,0 +1,42 @@
+CREATE TABLE hospede (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefone VARCHAR(15),
+    cpf VARCHAR(20) UNIQUE,
+    data_nascimento DATE,
+    endereco TEXT
+);
+
+CREATE TABLE funcionario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefone VARCHAR(15),
+    cargo VARCHAR(50),
+    data_contratacao DATE,
+    salario DECIMAL(10, 2)
+);
+
+CREATE TABLE tipos_de_quarto (
+    id SERIAL PRIMARY KEY,
+    descricao VARCHAR(100) NOT NULL,
+    preco_diaria DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE reserva (
+    id SERIAL PRIMARY KEY,
+    hospede_id INT REFERENCES hospede(id) ON DELETE CASCADE,
+    data_checkin DATE NOT NULL,
+    data_checkout DATE NOT NULL,
+    data_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE quartos_da_reserva (
+    id SERIAL PRIMARY KEY,
+    reserva_id INT REFERENCES reserva(id) ON DELETE CASCADE,
+    tipo_quarto_id INT REFERENCES tipos_de_quarto(id) ON DELETE CASCADE,
+    quantidade INT NOT NULL,
+    preco_total DECIMAL(10, 2) NOT NULL
+);
